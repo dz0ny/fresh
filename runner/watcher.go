@@ -39,10 +39,11 @@ func watch() {
 	root := root()
 	filepath.Walk(root, func(path string, info os.FileInfo, err error) error {
 		if info.IsDir() && !isTmpDir(path) {
-			if len(path) > 1 && strings.HasPrefix(filepath.Base(path), ".") {
-				return filepath.SkipDir
+			if len(path) > 1 {
+				if strings.HasPrefix(filepath.Base(path), ".") || strings.HasPrefix(filepath.Base(path), "node_modules") {
+					return filepath.SkipDir
+				}
 			}
-
 			watchFolder(path)
 		}
 
